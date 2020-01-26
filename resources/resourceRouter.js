@@ -17,6 +17,21 @@ router.get('/', (req, res) => {
         })
 });
 
+router.get('/:id/resources', (req, res) => {
+    db.getprojectres(req.params.id)
+        .then(resources => {
+            if (resources) {
+            	res.status(200).json(resources)
+            } else {
+            	res.status(404).json({message: 'There are no resources to be found.'})
+            }
+        })
+        .catch(error => {
+            console.log('get all resources error', error);
+            res.status(500).json({message: 'There was an error in the database when trying to get all resources.'})
+        })
+});
+
 router.get('/linked', (req, res) => {
     db.getLinked()
         .then(info => {

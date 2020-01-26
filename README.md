@@ -44,7 +44,7 @@ the database is the file that stores the data. sql is the language understands t
 
 - [ ] Why do tables need a `primary key`?
 
-to make them searchable with no duplicates.
+to make data searchable with no duplicates/unique to them.
 
 - [ ] What is the name given to a table column that references the primary key on another table.
 

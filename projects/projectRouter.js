@@ -32,4 +32,20 @@ router.post('/', (req, res) => {
         })
 });
 
+router.get('/:id/details', (req, res) => {
+    const projectId = req.params.id
+    db.getProjectDetails(projectId)
+        .then(projectDetails => {
+            if (projectDetails) {
+            	res.status(200).json(projectDetails)
+            } else {
+            	res.status(404).json({message: 'There are no projectDetails to be found.'})
+            }
+        })
+        .catch(error => {
+            console.log('get projectDetails error', error);
+            res.status(500).json({message: 'There was an error in the database when trying to get a projectDetails.'})
+        })
+});
+
 module.exports = router;
