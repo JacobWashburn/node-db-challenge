@@ -3,7 +3,8 @@ const db = require('../data/db.js');
 module.exports = {
     getProjects,
     addProject,
-    getProjectDetails
+    getProjectDetails,
+    getstuff
 };
 
 function getProjects() {
@@ -19,30 +20,50 @@ function addProject(project) {
         });
 }
 
-async function getProjectDetails(id) {
+function getProjectDetails(id) {
     return db('tasks')
         .where('project_id', id)
         .then(tasks => {
-            console.log('tasks log-------',tasks);
             return db('projects')
                 .where('id', id)
                 .then(proj => {
-                    console.log('project log-------',proj);
                     return db('resources as r')
                         .join('res_task_proj as rtp', 'r.id', 'rtp.resource_id')
                         .where('rtp.project_id', id)
                         .then(rscs => {
-                            console.log('resources log--------',rscs);
                             return {
                                 ...proj,
-                                tasks:
-                                     [...tasks],
-                                    resources: [...rscs]
+                                tasks: [...tasks],
+                                resources: [...rscs]
                             };
                         })
                         .catch(error => {
-                            console.log('get resources error-------',error);
-                        })
+                            console.log('get resources error-------', error);
+                        });
+                })
+                .catch(error => {
+                    console.log('get a project by id error------------', error);
                 });
+        })
+        .catch(error => {
+            console.log('get tasks by project id error----------', error);
         });
+}
+
+async function getstuff(id) {
+    const tasks = await db('tasks')
+        .where('project_id', id);
+    console.log(tasks);
+    const project = await db('projects')
+        .where('id', id);
+
+    const resources = await db('resources as r')
+        .join('res_task_proj as rtp', 'r.id', 'rtp.resource_id')
+        .where('rtp.project_id', id);
+
+    return {
+        ...project,
+        tasks: [...tasks],
+        resources: [...resources]
+    };
 }
