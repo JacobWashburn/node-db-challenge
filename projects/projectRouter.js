@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
             res.status(500).json({message: 'There was an error in the database when trying to get all projects.'});
         });
 });
+
 router.post('/', (req, res) => {
     const newProject = req.body;
     db.addProject(newProject)
@@ -46,6 +47,7 @@ router.get('/:id/details', (req, res) => {
             console.log('get projectDetails error', error);
             res.status(500).json({message: 'There was an error in the database when trying to get a projectDetails.'});
         });
+    
 });
 
 router.get('/:id/details/stuff', async (req, res) => {
@@ -57,5 +59,6 @@ router.get('/:id/details/stuff', async (req, res) => {
         res.status(404).json({message: 'There are no projectDetails to be found.'});
     }
 });
+
 
 module.exports = router;

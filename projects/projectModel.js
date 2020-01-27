@@ -52,14 +52,23 @@ function getProjectDetails(id) {
 
 async function getstuff(id) {
     const tasks = await db('tasks')
-        .where('project_id', id);
-    console.log(tasks);
+        .where('project_id', id)
+        .catch(error => {
+            console.log('get tasks by project id error----------', error);
+        });
+
     const project = await db('projects')
-        .where('id', id);
+        .where('id', id)
+        .catch(error => {
+            console.log('get a project by id error------------', error);
+        });
 
     const resources = await db('resources as r')
         .join('res_task_proj as rtp', 'r.id', 'rtp.resource_id')
-        .where('rtp.project_id', id);
+        .where('rtp.project_id', id)
+        .catch(error => {
+            console.log('get resources error-------', error);
+        });
 
     return {
         ...project,
@@ -67,3 +76,4 @@ async function getstuff(id) {
         resources: [...resources]
     };
 }
+
